@@ -257,7 +257,7 @@ export const store = reactive({
         count: this.count,
         damagePerClick: this.damagePerClick,
         damagePerSecond: this.damagePerSecond,
-        totalClicks: this.totalClicks,
+        // DO NOT save totalClicks - reset each session to prevent cheating!
         upgrades: this.upgrades,
         verifiedAddress: this.verifiedAddress,
         isVerified: this.isVerified,
@@ -276,7 +276,7 @@ export const store = reactive({
       this.count = data.count || 0
       this.damagePerClick = data.damagePerClick || 1
       this.damagePerSecond = data.damagePerSecond || 0
-      this.totalClicks = data.totalClicks || 0
+      this.totalClicks = 0 // Always start fresh at 0 clicks for this session
       this.upgrades = data.upgrades || Array(UPGRADES.length).fill(0)
       this.verifiedAddress = data.verifiedAddress || ''
       this.isVerified = data.isVerified || false

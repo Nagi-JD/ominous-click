@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted } from 'vue'
 import { store, UPGRADES } from './store'
 import Pumpkin from './components/Pumpkin.vue'
 import HUD from './components/HUD.vue'
@@ -6,6 +7,30 @@ import WalletButton from './components/WalletButton.vue'
 import Leaderboard from './components/Leaderboard.vue'
 
 store.loadData()
+
+// Submit final score when user leaves
+const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+  if (store.isVerified && store.totalClicks > 0) {
+    store.submitToLeaderboard() // Sync to server
+  }
+}
+
+// Submit on page visibility change (minimize, close tab, etc)
+const handleVisibilityChange = () => {
+  if (document.hidden && store.isVerified && store.totalClicks > 0) {
+    store.submitToLeaderboard() // Sync to server
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('beforeunload', handleBeforeUnload)
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload)
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
+})
 </script>
 
 <template>
