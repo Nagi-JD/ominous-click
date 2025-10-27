@@ -188,10 +188,14 @@ body {
     transform: scale(1.1);
   }
   
-  img {
+  svg {
     width: 24px;
     height: 24px;
-    filter: invert(1);
+    fill: white;
+  }
+  
+  &:hover svg {
+    fill: #000;
   }
 }
 
