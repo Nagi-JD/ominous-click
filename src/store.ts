@@ -215,6 +215,7 @@ export const store = reactive({
     this.lastClickTime = now
     this.count += this.damagePerClick
     this.totalClicks += 1 // Count clicks for leaderboard
+    console.log('🖱️ Click! Total clicks this session:', this.totalClicks)
     this.slash()
     this.saveData()
   },
