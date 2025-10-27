@@ -242,13 +242,14 @@ export const store = reactive({
   async submitToLeaderboard() {
     if (!this.isVerified || !this.verifiedAddress) return
     
-    // Rate limiting: max 1 submission per 10 seconds
+    // Rate limiting: max 1 submission per 5 seconds
     const now = Date.now()
-    if (now - this.lastSubmission < 10000) return
+    if (now - this.lastSubmission < 5000) return
     this.lastSubmission = now
     
     try {
       const { submitScore } = await import('./services/tokenVerifier')
+      console.log('📊 Submitting score:', { address: this.verifiedAddress, totalClicks: this.totalClicks, score: this.count })
       await submitScore(
         this.verifiedAddress,
         this.count,
@@ -258,8 +259,9 @@ export const store = reactive({
           totalClicks: this.totalClicks
         }
       )
+      console.log('✅ Score submitted successfully')
     } catch (error) {
-      console.error('Error submitting to leaderboard:', error)
+      console.error('❌ Error submitting to leaderboard:', error)
     }
   },
   saveData() {
