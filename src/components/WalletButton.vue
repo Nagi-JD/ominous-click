@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { store } from '../store'
 import { verifyTokenOwnership } from '../services/tokenVerifier'
 
@@ -31,6 +31,25 @@ const verified = ref(false)
 const verifying = ref(false)
 const error = ref('')
 const success = ref(false)
+
+// Load verification status from store on mount
+onMounted(() => {
+  if (store.isVerified && store.verifiedAddress) {
+    verified.value = true
+    address.value = store.verifiedAddress
+  }
+})
+
+// Sync with store when verification changes
+watch(() => store.isVerified, (isVerified) => {
+  verified.value = isVerified
+})
+
+watch(() => store.verifiedAddress, (addr) => {
+  if (addr) {
+    address.value = addr
+  }
+})
 
 const shortenedAddress = computed(() => {
   if (!address.value) return ''
@@ -55,6 +74,7 @@ const verifyAddress = async () => {
       // Save to store
       store.verifiedAddress = address.value
       store.isVerified = true
+      store.saveData() // Persist to localStorage
     } else {
       error.value = 'This address does not own the required token'
     }
@@ -78,8 +98,10 @@ const checkTokenOwnership = async (addr: string): Promise<boolean> => {
 
 const changeAddress = () => {
   verified.value = false
-  address.value = store.verifiedAddress || ''
+  address.value = ''
   store.isVerified = false
+  store.verifiedAddress = ''
+  store.saveData() // Persist the change
 }
 </script>
 
