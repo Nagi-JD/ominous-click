@@ -108,38 +108,41 @@ const changeAddress = () => {
 <style scoped>
 .address-input {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  left: 16px;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: stretch;
-  
-  @media (min-width: 768px) {
-    left: auto;
-    right: 16px;
-    width: auto;
-    align-items: flex-end;
-  }
+  align-items: center;
+  z-index: 60;
 }
 
 .input {
-  padding: 14px 18px;
+  padding: 16px 20px;
   border-radius: 8px;
-  border: 2px solid #fff;
+  border: 2px solid #fda619;
   background-color: #000;
-  color: #fff;
-  font-size: 16px;
+  color: #fda619;
+  font-size: 18px;
   width: 100%;
+  font-family: monospace;
   
   @media (min-width: 768px) {
-    width: auto;
-    min-width: 400px;
+    font-size: 20px;
   }
   
   &::placeholder {
-    color: #666;
+    color: #fda619;
+    opacity: 0.6;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: #ffbb33;
+    box-shadow: 0 0 10px rgba(253, 166, 25, 0.5);
   }
 }
 
@@ -166,14 +169,16 @@ const changeAddress = () => {
 
 .error {
   color: #ff4444;
-  font-size: 12px;
-  text-align: right;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .success {
   color: #10b981;
-  font-size: 12px;
-  text-align: right;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .verified-badge {

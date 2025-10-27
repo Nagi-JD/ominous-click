@@ -35,7 +35,6 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="game">
-    <WalletButton />
     <HUD />
     <Leaderboard />
     
@@ -48,7 +47,13 @@ onBeforeUnmount(() => {
     <div v-if="!store.isVerified" class="halloween-message">
       <h2>🎃 Halloween</h2>
       <p>Verify that u are ready to fight pumpkin demon by verifying ur Solana address</p>
+      <div class="instructions">
+        <p class="warning">Only token owner can fight pumpkin demon</p>
+        <p class="arrow">↓ Your Solana address below ↓</p>
+      </div>
     </div>
+    
+    <WalletButton />
     
     <Pumpkin />
   </div>
@@ -136,6 +141,23 @@ body {
     color: #fff;
     font-weight: bold;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  }
+  
+  .instructions {
+    margin-top: 30px;
+    
+    .warning {
+      color: #fda619;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .arrow {
+      color: #fff;
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: normal;
+    }
   }
 }
 
