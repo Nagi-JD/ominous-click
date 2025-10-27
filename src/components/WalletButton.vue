@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
-import { store } from '../store'
+import { store, UPGRADES } from '../store'
 import { verifyTokenOwnership } from '../services/tokenVerifier'
 
 const address = ref('')
@@ -101,6 +101,12 @@ const changeAddress = () => {
   address.value = ''
   store.isVerified = false
   store.verifiedAddress = ''
+  // Reset all game stats for new address
+  store.count = 0
+  store.damagePerClick = 1
+  store.damagePerSecond = 0
+  store.totalClicks = 0
+  store.upgrades = Array(UPGRADES.length).fill(0)
   store.saveData() // Persist the change
 }
 </script>

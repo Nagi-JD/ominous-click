@@ -288,12 +288,28 @@ export const store = reactive({
     const dataString = localStorage.getItem('clickerData')
     if (dataString) {
       const data = JSON.parse(dataString)
-      this.count = data.count || 0
-      this.damagePerClick = data.damagePerClick || 1
-      this.damagePerSecond = data.damagePerSecond || 0
-      this.totalClicks = 0 // Always start fresh at 0 clicks for this session
-      this.upgrades = data.upgrades || Array(UPGRADES.length).fill(0)
-      this.verifiedAddress = data.verifiedAddress || ''
+      
+      // Si l'adresse a changé, réinitialiser tout
+      const previousAddress = this.verifiedAddress
+      const newAddress = data.verifiedAddress || ''
+      
+      if (previousAddress && newAddress && previousAddress !== newAddress) {
+        console.log('🔄 Address changed, resetting stats')
+        this.count = 0
+        this.damagePerClick = 1
+        this.damagePerSecond = 0
+        this.totalClicks = 0
+        this.upgrades = Array(UPGRADES.length).fill(0)
+      } else {
+        // Sinon charger normalement
+        this.count = data.count || 0
+        this.damagePerClick = data.damagePerClick || 1
+        this.damagePerSecond = data.damagePerSecond || 0
+        this.totalClicks = 0 // Always start fresh at 0 clicks for this session
+        this.upgrades = data.upgrades || Array(UPGRADES.length).fill(0)
+      }
+      
+      this.verifiedAddress = newAddress
       this.isVerified = data.isVerified || false
 
       if (this.damagePerSecond > 0) {
