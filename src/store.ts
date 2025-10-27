@@ -183,6 +183,7 @@ export const store = reactive({
   upgrades: Array(UPGRADES.length).fill(0),
   verifiedAddress: '',
   isVerified: false,
+  lastSubmission: 0,
   slash() {
     if (this.mute) return
     sfx.play(`slash${Math.floor(Math.random() * 2) + 1}`)
@@ -223,6 +224,28 @@ export const store = reactive({
   autoHit() {
     this.count += this.damagePerSecond
   },
+  async submitToLeaderboard() {
+    if (!this.isVerified || !this.verifiedAddress) return
+    
+    // Rate limiting: max 1 submission per 10 seconds
+    const now = Date.now()
+    if (now - this.lastSubmission < 10000) return
+    this.lastSubmission = now
+    
+    try {
+      const { submitScore } = await import('./services/tokenVerifier')
+      await submitScore(
+        this.verifiedAddress,
+        this.count,
+        {
+          damagePerClick: this.damagePerClick,
+          damagePerSecond: this.damagePerSecond
+        }
+      )
+    } catch (error) {
+      console.error('Error submitting to leaderboard:', error)
+    }
+  },
   saveData() {
     localStorage.setItem(
       'clickerData',
@@ -235,6 +258,11 @@ export const store = reactive({
         isVerified: this.isVerified,
       })
     )
+    
+    // Auto-submit to leaderboard every 30 seconds if verified
+    if (this.isVerified) {
+      this.submitToLeaderboard()
+    }
   },
   loadData() {
     const dataString = localStorage.getItem('clickerData')
