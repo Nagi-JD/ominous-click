@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { formatNumber } from '../utils'
 import { store } from '../store'
 import { getLeaderboard } from '../services/tokenVerifier'
