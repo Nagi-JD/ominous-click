@@ -1,4 +1,5 @@
 // API endpoint to claim round winners and reset leaderboard
+// This API is called by GitHub Actions every 5 minutes
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.SUPABASE_URL
