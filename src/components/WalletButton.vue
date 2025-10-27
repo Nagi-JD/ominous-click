@@ -108,7 +108,7 @@ const changeAddress = () => {
 <style scoped>
 .address-input {
   position: absolute;
-  top: 60%;
+  top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
