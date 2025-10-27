@@ -96,10 +96,14 @@ const toggle = () => {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
     loadLeaderboard()
-    // Refresh leaderboard every 10 seconds
-    refreshInterval = setInterval(() => {
-      loadLeaderboard()
-    }, 10000)
+    // Refresh leaderboard every 5 seconds
+    if (!refreshInterval) {
+      refreshInterval = setInterval(() => {
+        if (isOpen.value) {
+          loadLeaderboard()
+        }
+      }, 5000)
+    }
   } else {
     // Stop refresh when leaderboard closes
     if (refreshInterval) {
