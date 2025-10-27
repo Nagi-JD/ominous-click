@@ -6,19 +6,25 @@ import Shop from './Shop.vue'
 
 <template>
   <template v-if="store.isVerified">
-    <div class="counter"><img src="../assets/img/candy.svg" alt="" /> {{ formatNumber(store.count) }}</div>
-    <div class="counter click"><img src="../assets/img/mouse.svg" alt="" /> {{ formatNumber(store.damagePerClick) }}</div>
-    <div class="counter second">
-      <img src="../assets/img/clock.svg" alt="" /> {{ formatNumber(store.damagePerSecond) }}
+    <div class="hud-wrapper">
+      <div class="counter"><img src="../assets/img/candy.svg" alt="" /> {{ formatNumber(store.count) }}</div>
+      <div class="counter click"><img src="../assets/img/mouse.svg" alt="" /> {{ formatNumber(store.damagePerClick) }}</div>
+      <div class="counter second">
+        <img src="../assets/img/clock.svg" alt="" /> {{ formatNumber(store.damagePerSecond) }}
+      </div>
+      <button class="sound" @click="store.toggleMute">
+        <img :src="getSVGImageURL(`sound-${store.mute ? 'off' : 'on'}`)" alt="" />
+      </button>
+      <Shop />
     </div>
-    <button class="sound" @click="store.toggleMute">
-      <img :src="getSVGImageURL(`sound-${store.mute ? 'off' : 'on'}`)" alt="" />
-    </button>
-    <Shop />
   </template>
 </template>
 
 <style scoped>
+.hud-wrapper {
+  position: relative;
+  z-index: 300;
+}
 .counter {
   color: #fff;
   padding: 0 16px;
