@@ -16,8 +16,10 @@ jobs:
         run: |
           echo "🏆 Calling claim-round-winners API..."
           
+          VERCEL_URL="https://ominousclick.xyz"
+          
           response=$(curl -s -w "\n%{http_code}" -X POST \
-            ${{ secrets.VERCEL_URL || 'https://ominous-click.vercel.app' }}/api/claim-round-winners \
+            $VERCEL_URL/api/claim-round-winners \
             -H "Content-Type: application/json")
           
           http_code=$(echo "$response" | tail -n1)
