@@ -5,6 +5,19 @@
       "destination": "/api/$1" 
     }
   ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "ominousclick.xyz"
+        }
+      ],
+      "destination": "https://www.ominousclick.xyz/:splat",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
