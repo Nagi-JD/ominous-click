@@ -12,7 +12,7 @@
         Rewards for Top 10
       </div>
       <div class="live-indicator">
-        🔴 LIVE - Updates every 10s
+        🔴 LIVE - Updates every 30 minutes
       </div>
       
       <div class="my-rank" v-if="myRank && myRank > 0">
@@ -79,10 +79,10 @@ const toggle = () => {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
     loadLeaderboard()
-    // Auto-refresh le leaderboard toutes les 10 secondes
+    // Auto-refresh le leaderboard toutes les 30 minutes
     refreshInterval = setInterval(() => {
       loadLeaderboard()
-    }, 10000)
+    }, 30 * 60 * 1000) // 30 minutes = 1,800,000 ms
   } else {
     // Arrêter le refresh quand le leaderboard se ferme
     if (refreshInterval) {
