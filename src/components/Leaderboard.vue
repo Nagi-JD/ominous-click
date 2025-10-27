@@ -43,7 +43,6 @@ import { getLeaderboard } from '../services/tokenVerifier'
 
 const isOpen = ref(false)
 const players = ref<any[]>([])
-const myScore = ref(0)
 const myRank = ref(0)
 const myClicks = ref(0)
 
@@ -114,7 +113,7 @@ const toggle = () => {
 onMounted(() => {
   timerInterval = setInterval(() => {
     // Force reactivity update
-    const _ = timeRemaining.value
+    void timeRemaining.value
   }, 1000)
 })
 
