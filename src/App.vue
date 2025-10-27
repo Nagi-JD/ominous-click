@@ -56,6 +56,11 @@ onBeforeUnmount(() => {
     <WalletButton />
     
     <Pumpkin />
+    
+    <!-- GitHub Link -->
+    <a href="https://github.com/Nagi-JD/ominous-click" target="_blank" rel="noopener noreferrer" class="github-link">
+      <img src="../assets/img/github.svg" alt="GitHub" />
+    </a>
   </div>
 </template>
 
@@ -158,6 +163,33 @@ body {
       margin-top: 10px;
       font-weight: normal;
     }
+  }
+}
+
+.github-link {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  
+  &:hover {
+    background-color: rgba(253, 166, 25, 0.9);
+    transform: scale(1.1);
+  }
+  
+  img {
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
   }
 }
 
