@@ -18,7 +18,7 @@ jobs:
           
           VERCEL_URL="https://ominousclick.xyz"
           
-          response=$(curl -s -w "\n%{http_code}" -X POST \
+          response=$(curl -s -L -w "\n%{http_code}" -X POST \
             $VERCEL_URL/api/claim-round-winners \
             -H "Content-Type: application/json")
           
