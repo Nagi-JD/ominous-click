@@ -35,11 +35,11 @@ export default async function handler(req, res) {
     const supabase = createClient(supabaseUrl, supabaseKey)
     const limit = parseInt(req.query.limit) || 100
 
-    // Get top players from Supabase
+    // Get top players from Supabase - Now ranked by CLICKS!
     const { data: players, error } = await supabase
       .from('scores')
-      .select('address, score, damage_per_click, damage_per_second, timestamp')
-      .order('score', { ascending: false })
+      .select('address, score, total_clicks, damage_per_click, damage_per_second, timestamp')
+      .order('total_clicks', { ascending: false }) // Rank by clicks instead of score
       .limit(limit)
 
     if (error) {
@@ -51,6 +51,7 @@ export default async function handler(req, res) {
     const formattedPlayers = (players || []).map((p, index) => ({
       address: p.address,
       score: p.score,
+      totalClicks: p.total_clicks || 0, // Show clicks in leaderboard
       rank: index + 1,
       stats: {
         damagePerClick: p.damage_per_click,

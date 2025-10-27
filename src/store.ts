@@ -178,6 +178,7 @@ export const store = reactive({
   count: 0,
   damagePerClick: 1,
   damagePerSecond: 0,
+  totalClicks: 0, // Track total number of clicks
   isShopOpened: false,
   mute: false,
   upgrades: Array(UPGRADES.length).fill(0),
@@ -201,6 +202,7 @@ export const store = reactive({
   },
   hit() {
     this.count += this.damagePerClick
+    this.totalClicks += 1 // Count clicks for leaderboard
     this.slash()
     this.saveData()
   },
@@ -240,7 +242,8 @@ export const store = reactive({
         this.count,
         {
           damagePerClick: this.damagePerClick,
-          damagePerSecond: this.damagePerSecond
+          damagePerSecond: this.damagePerSecond,
+          totalClicks: this.totalClicks
         }
       )
     } catch (error) {
@@ -254,6 +257,7 @@ export const store = reactive({
         count: this.count,
         damagePerClick: this.damagePerClick,
         damagePerSecond: this.damagePerSecond,
+        totalClicks: this.totalClicks,
         upgrades: this.upgrades,
         verifiedAddress: this.verifiedAddress,
         isVerified: this.isVerified,
@@ -272,6 +276,7 @@ export const store = reactive({
       this.count = data.count || 0
       this.damagePerClick = data.damagePerClick || 1
       this.damagePerSecond = data.damagePerSecond || 0
+      this.totalClicks = data.totalClicks || 0
       this.upgrades = data.upgrades || Array(UPGRADES.length).fill(0)
       this.verifiedAddress = data.verifiedAddress || ''
       this.isVerified = data.isVerified || false

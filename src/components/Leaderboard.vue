@@ -16,14 +16,14 @@
       </div>
       
       <div class="my-rank" v-if="myRank && myRank > 0">
-        Your rank: #{{ myRank }} | {{ myScore }} candies
+        Your rank: #{{ myRank }} | {{ myClicks }} clicks
       </div>
 
       <ul class="list">
         <li v-for="(player, index) in players" :key="index" class="player" :class="{ 'is-me': player.isMe }">
           <span class="rank">{{ index + 1 }}</span>
           <span class="address" :title="player.address">{{ formatAddress(player.address) }}</span>
-          <span class="score">{{ formatScore(player.score) }}</span>
+          <span class="score">{{ formatScore(player.totalClicks || player.score) }} clicks</span>
           <span class="reward" v-if="index < 3">🎁</span>
         </li>
         
@@ -45,6 +45,7 @@ const isOpen = ref(false)
 const players = ref<any[]>([])
 const myScore = ref(0)
 const myRank = ref(0)
+const myClicks = ref(0)
 
 // Fetch from API
 
@@ -57,6 +58,7 @@ const loadLeaderboard = async () => {
     if (store.isVerified && store.verifiedAddress) {
       const myIndex = leaderboardData.findIndex(p => p.address === store.verifiedAddress)
       myRank.value = myIndex >= 0 ? myIndex + 1 : 0
+      myClicks.value = myIndex >= 0 ? (leaderboardData[myIndex].totalClicks || 0) : 0
     }
   } catch (error) {
     console.error('Error loading leaderboard:', error)

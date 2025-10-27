@@ -52,7 +52,7 @@ export async function verifyTokenOwnershipViaAPI(address: string): Promise<boole
 export async function submitScore(
   address: string, 
   score: number, 
-  stats: { damagePerClick: number; damagePerSecond: number }
+  stats: { damagePerClick: number; damagePerSecond: number; totalClicks?: number }
 ): Promise<boolean> {
   try {
     const response = await fetch(`${CONFIG.API_URL}/api/submit-score`, {
@@ -64,6 +64,7 @@ export async function submitScore(
         address, 
         score, 
         stats,
+        totalClicks: stats.totalClicks || 0,
         timestamp: Date.now() 
       }),
     })

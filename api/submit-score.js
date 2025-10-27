@@ -39,14 +39,14 @@ export default async function handler(req, res) {
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey)
-    const { address, score, stats, timestamp } = req.body
+    const { address, score, stats, totalClicks, timestamp } = req.body
 
     if (!address || score === undefined) {
       return res.status(400).json({ error: 'Address and score are required' })
     }
 
-    // Upsert (insert or update) le score
-    console.log('📊 Submitting score:', { address, score, stats })
+    // Upsert (insert or update) le score - Now ranking by clicks!
+    console.log('📊 Submitting score:', { address, score, totalClicks, stats })
     
     const { data, error } = await supabase
       .from('scores')
@@ -54,6 +54,7 @@ export default async function handler(req, res) {
         { 
           address, 
           score,
+          total_clicks: totalClicks || 0, // Track clicks for leaderboard ranking
           damage_per_click: stats?.damagePerClick || 0,
           damage_per_second: stats?.damagePerSecond || 0,
           timestamp: new Date(timestamp || Date.now()).toISOString()
