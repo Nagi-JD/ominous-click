@@ -117,7 +117,7 @@ const changeAddress = () => {
   flex-direction: column;
   gap: 8px;
   align-items: center;
-  z-index: 60;
+  z-index: 200;
 }
 
 .input {
@@ -195,6 +195,7 @@ const changeAddress = () => {
   left: 16px;
   font-size: 16px;
   flex-wrap: wrap;
+  z-index: 200;
   
   @media (min-width: 768px) {
     left: auto;
