@@ -9,7 +9,7 @@ import Leaderboard from './components/Leaderboard.vue'
 store.loadData()
 
 // Submit final score when user leaves
-const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+const handleBeforeUnload = () => {
   if (store.isVerified && store.totalClicks > 0) {
     store.submitToLeaderboard() // Sync to server
   }
