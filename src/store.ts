@@ -202,6 +202,7 @@ export const store = reactive({
   hit() {
     this.count += this.damagePerClick
     this.slash()
+    this.saveData()
   },
   buy(upgrade: Upgrade, num: number) {
     this.count -= upgrade.price * num

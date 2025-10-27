@@ -11,6 +11,9 @@
         <span class="trophy">🏅</span>
         Rewards for Top 10
       </div>
+      <div class="live-indicator">
+        🔴 LIVE - Updates every 10s
+      </div>
       
       <div class="my-rank" v-if="myRank && myRank > 0">
         Your rank: #{{ myRank }} | {{ myScore }} candies
@@ -68,10 +71,22 @@ const formatAddress = (address: string) => {
   return `${address.slice(0, 4)}...${address.slice(-4)}`
 }
 
+let refreshInterval: NodeJS.Timeout | null = null
+
 const toggle = () => {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
     loadLeaderboard()
+    // Auto-refresh le leaderboard toutes les 10 secondes
+    refreshInterval = setInterval(() => {
+      loadLeaderboard()
+    }, 10000)
+  } else {
+    // Arrêter le refresh quand le leaderboard se ferme
+    if (refreshInterval) {
+      clearInterval(refreshInterval)
+      refreshInterval = null
+    }
   }
 }
 </script>
@@ -204,6 +219,27 @@ const toggle = () => {
   text-align: center;
   color: #666;
   padding: 40px 20px;
+}
+
+.live-indicator {
+  background-color: #10b981;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 @media (max-width: 768px) {
