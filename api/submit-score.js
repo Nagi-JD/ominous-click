@@ -4,7 +4,18 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseKey = process.env.SUPABASE_KEY
 
+if (!supabaseUrl || !supabaseKey) {
+  console.error('⚠️ Supabase credentials not configured!')
+  console.error('SUPABASE_URL:', supabaseUrl ? '✅ Set' : '❌ Missing')
+  console.error('SUPABASE_KEY:', supabaseKey ? '✅ Set' : '❌ Missing')
+}
+
 export default async function handler(req, res) {
+  // Debug: Log environment variables
+  console.log('🔍 Debug - Environment variables:')
+  console.log('SUPABASE_URL:', supabaseUrl ? '✅' : '❌')
+  console.log('SUPABASE_KEY:', supabaseKey ? '✅' : '❌')
+  
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true)
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -22,7 +33,8 @@ export default async function handler(req, res) {
 
   try {
     if (!supabaseUrl || !supabaseKey) {
-      console.error('Supabase credentials not configured')
+      console.error('❌ Supabase credentials not configured')
+      console.error('Check Vercel Environment Variables!')
       return res.status(500).json({ error: 'Database not configured' })
     }
 
@@ -34,6 +46,8 @@ export default async function handler(req, res) {
     }
 
     // Upsert (insert or update) le score
+    console.log('📊 Submitting score:', { address, score, stats })
+    
     const { data, error } = await supabase
       .from('scores')
       .upsert(
@@ -51,8 +65,11 @@ export default async function handler(req, res) {
       )
       .select()
 
+    console.log('✅ Supabase response:', { data, error })
+
     if (error) {
-      console.error('Supabase error:', error)
+      console.error('❌ Supabase error:', error)
+      console.error('Error details:', JSON.stringify(error, null, 2))
       return res.status(500).json({ error: 'Database error', details: error.message })
     }
 
