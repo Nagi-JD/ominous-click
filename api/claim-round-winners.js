@@ -28,40 +28,41 @@ export default async function handler(req, res) {
 
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    // Get top 10 winners
-    const { data: winners, error: fetchError } = await supabase
+    // Get ONLY the 1st place winner
+    const { data: winner, error: fetchError } = await supabase
       .from('scores')
       .select('address, total_clicks, score')
       .order('total_clicks', { ascending: false })
-      .limit(10)
+      .limit(1)
 
     if (fetchError) {
       console.error('Supabase fetch error:', fetchError)
-      return res.status(500).json({ error: 'Failed to fetch winners', details: fetchError.message })
+      return res.status(500).json({ error: 'Failed to fetch winner', details: fetchError.message })
     }
 
-    if (!winners || winners.length === 0) {
+    if (!winner || winner.length === 0) {
+      console.log('🏆 No winner this round - leaderboard was empty')
+      // Still clear the leaderboard even if empty
+      const { error: deleteError } = await supabase
+        .from('scores')
+        .delete()
+        .neq('id', 0)
+      
       return res.status(200).json({ 
         success: true, 
-        winners: [],
-        message: 'No winners this round' 
+        winner: null,
+        message: 'No winner this round - leaderboard was empty' 
       })
     }
 
-    // TODO: Send rewards to these addresses (you'll implement this with your Solana wallet)
-    const rewards = {
-      1: 1.0,  // 1 SOL for 1st
-      2: 0.5, // 0.5 SOL for 2nd
-      3: 0.3, // 0.3 SOL for 3rd
-      top10: 0.1 // 0.1 SOL for 4-10
-    }
+    const champion = winner[0]
+    const rewardAmount = 1.0 // 1 SOL for the winner
 
-    console.log('🏆 Round Winners:', winners.map((w, i) => ({
-      rank: i + 1,
-      address: w.address,
-      clicks: w.total_clicks,
-      reward: i < 3 ? rewards[i + 1] : rewards.top10
-    })))
+    console.log('🏆 Round Champion:', {
+      address: champion.address,
+      clicks: champion.total_clicks,
+      reward: rewardAmount + ' SOL'
+    })
 
     // Delete all scores to start fresh round
     const { error: deleteError } = await supabase
@@ -76,12 +77,11 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      winners: winners.map((w, i) => ({
-        rank: i + 1,
-        address: w.address,
-        clicks: w.total_clicks,
-        reward: i < 3 ? rewards[i + 1] : rewards.top10
-      })),
+      winner: {
+        address: champion.address,
+        clicks: champion.total_clicks,
+        reward: rewardAmount + ' SOL'
+      },
       message: 'Round ended and leaderboard reset'
     })
 

@@ -8,8 +8,8 @@
     <div class="panel">
       <div class="title">🏆 Leaderboard</div>
       <div class="rewards-banner">
-        <span class="trophy">🏅</span>
-        Rewards for Top 10
+        <span class="trophy">🏆</span>
+        Winner takes 1 SOL every 5 minutes!
       </div>
       <div class="live-indicator">
         🔴 LIVE - Round ends in {{ timeRemaining }}
@@ -24,7 +24,7 @@
           <span class="rank">{{ index + 1 }}</span>
           <span class="address" :title="player.address">{{ formatAddress(player.address) }}</span>
           <span class="score">{{ formatScore(player.totalClicks || player.score) }} clicks</span>
-          <span class="reward" v-if="index < 3">🎁</span>
+          <span class="reward" v-if="index === 0">👑</span>
         </li>
         
         <li v-if="players.length === 0" class="empty">
