@@ -19,7 +19,7 @@
       <ul class="list">
         <li v-for="(player, index) in players" :key="index" class="player" :class="{ 'is-me': player.isMe }">
           <span class="rank">{{ index + 1 }}</span>
-          <span class="address">{{ player.address }}</span>
+          <span class="address" :title="player.address">{{ formatAddress(player.address) }}</span>
           <span class="score">{{ formatScore(player.score) }}</span>
           <span class="reward" v-if="index < 3">🎁</span>
         </li>
@@ -62,6 +62,11 @@ const loadLeaderboard = async () => {
 }
 
 const formatScore = (score: number) => formatNumber(score, 1000000)
+
+const formatAddress = (address: string) => {
+  if (!address || address.length < 12) return address
+  return `${address.slice(0, 4)}...${address.slice(-4)}`
+}
 
 const toggle = () => {
   isOpen.value = !isOpen.value
