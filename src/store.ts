@@ -18,7 +18,7 @@ export interface Upgrade {
 
 export const UPGRADES: Upgrade[] = [
   {
-    name: 'Poignard',
+    name: 'Knife',
     price: 20,
     value: 1,
     type: UpgradeType.DamagePerClick,
@@ -32,35 +32,35 @@ export const UPGRADES: Upgrade[] = [
     icon: 'slime',
   },
   {
-    name: 'Araignée',
+    name: 'Spider',
     price: 500,
     value: 10,
     type: UpgradeType.DamagePerSecond,
     icon: 'web',
   },
   {
-    name: 'Balai magique',
+    name: 'Broomstick',
     price: 6500,
     value: 100,
     type: UpgradeType.DamagePerSecond,
     icon: 'broomstick',
   },
   {
-    name: 'Hache',
+    name: 'Axe',
     price: 150000,
     value: 2000,
     type: UpgradeType.DamagePerClick,
     icon: 'axe',
   },
   {
-    name: 'Chauve-souris',
+    name: 'Bat',
     price: 2000000,
     value: 15000,
     type: UpgradeType.DamagePerSecond,
     icon: 'bat',
   },
   {
-    name: 'Fantôme',
+    name: 'Ghost',
     price: 20000000,
     value: 250000,
     type: UpgradeType.DamagePerSecond,
@@ -74,56 +74,56 @@ export const UPGRADES: Upgrade[] = [
     icon: 'zombie',
   },
   {
-    name: 'Épée',
+    name: 'Sword',
     price: 400000000,
     value: 2000000,
     type: UpgradeType.DamagePerClick,
     icon: 'sword',
   },
   {
-    name: 'Sorcière',
+    name: 'Witch',
     price: 5000000000,
     value: 100000000,
     type: UpgradeType.DamagePerSecond,
     icon: 'witch',
   },
   {
-    name: 'Squelette',
+    name: 'Skull',
     price: 100000000000,
     value: 5000000000,
     type: UpgradeType.DamagePerSecond,
     icon: 'skull',
   },
   {
-    name: 'Chaudron',
+    name: 'Cauldron',
     price: 3000000000000,
     value: 200000000000,
     type: UpgradeType.DamagePerSecond,
     icon: 'cauldron',
   },
   {
-    name: 'Flèche',
+    name: 'Arrow',
     price: 10000000000000,
     value: 80000000000,
     type: UpgradeType.DamagePerClick,
     icon: 'arrow',
   },
   {
-    name: 'Sac magique',
+    name: 'Magic Bag',
     price: 40000000000000,
     value: 500000000000,
     type: UpgradeType.DamagePerSecond,
     icon: 'bag',
   },
   {
-    name: 'Coffre maudit',
+    name: 'Cursed Chest',
     price: 300000000000000,
     value: 2000000000000,
     type: UpgradeType.DamagePerSecond,
     icon: 'chest',
   },
   {
-    name: 'Patte de singe',
+    name: 'Monkey Paw',
     price: 2000000000000000,
     value: 50000000000000,
     type: UpgradeType.DamagePerSecond,
@@ -137,14 +137,14 @@ export const UPGRADES: Upgrade[] = [
     icon: 'shuriken',
   },
   {
-    name: 'Cercueil',
+    name: 'Coffin',
     price: 800000000000000000,
     value: 400000000000000,
     type: UpgradeType.DamagePerSecond,
     icon: 'coffin',
   },
   {
-    name: 'Démon citrouille',
+    name: 'Pumpkin Demon',
     price: 10000000000000000000,
     value: 1000000000000000,
     type: UpgradeType.DamagePerSecond,
@@ -181,6 +181,8 @@ export const store = reactive({
   isShopOpened: false,
   mute: false,
   upgrades: Array(UPGRADES.length).fill(0),
+  verifiedAddress: '',
+  isVerified: false,
   slash() {
     if (this.mute) return
     sfx.play(`slash${Math.floor(Math.random() * 2) + 1}`)
@@ -229,6 +231,8 @@ export const store = reactive({
         damagePerClick: this.damagePerClick,
         damagePerSecond: this.damagePerSecond,
         upgrades: this.upgrades,
+        verifiedAddress: this.verifiedAddress,
+        isVerified: this.isVerified,
       })
     )
   },
@@ -240,6 +244,8 @@ export const store = reactive({
       this.damagePerClick = data.damagePerClick || 1
       this.damagePerSecond = data.damagePerSecond || 0
       this.upgrades = data.upgrades || Array(UPGRADES.length).fill(0)
+      this.verifiedAddress = data.verifiedAddress || ''
+      this.isVerified = data.isVerified || false
 
       if (this.damagePerSecond > 0) {
         this.startTimer()

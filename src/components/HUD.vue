@@ -5,15 +5,17 @@ import Shop from './Shop.vue'
 </script>
 
 <template>
-  <div class="counter"><img src="../assets/img/candy.svg" alt="" /> {{ formatNumber(store.count) }}</div>
-  <div class="counter click"><img src="../assets/img/mouse.svg" alt="" /> {{ formatNumber(store.damagePerClick) }}</div>
-  <div class="counter second">
-    <img src="../assets/img/clock.svg" alt="" /> {{ formatNumber(store.damagePerSecond) }}
-  </div>
-  <button class="sound" @click="store.toggleMute">
-    <img :src="getSVGImageURL(`sound-${store.mute ? 'off' : 'on'}`)" alt="" />
-  </button>
-  <Shop />
+  <template v-if="store.isVerified">
+    <div class="counter"><img src="../assets/img/candy.svg" alt="" /> {{ formatNumber(store.count) }}</div>
+    <div class="counter click"><img src="../assets/img/mouse.svg" alt="" /> {{ formatNumber(store.damagePerClick) }}</div>
+    <div class="counter second">
+      <img src="../assets/img/clock.svg" alt="" /> {{ formatNumber(store.damagePerSecond) }}
+    </div>
+    <button class="sound" @click="store.toggleMute">
+      <img :src="getSVGImageURL(`sound-${store.mute ? 'off' : 'on'}`)" alt="" />
+    </button>
+    <Shop />
+  </template>
 </template>
 
 <style scoped>

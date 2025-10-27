@@ -2,16 +2,29 @@
 import { store, UPGRADES } from './store'
 import Pumpkin from './components/Pumpkin.vue'
 import HUD from './components/HUD.vue'
+import WalletButton from './components/WalletButton.vue'
+import Leaderboard from './components/Leaderboard.vue'
 
 store.loadData()
 </script>
 
 <template>
   <div class="game">
+    <WalletButton />
     <HUD />
+    <Leaderboard />
+    
+    <!-- Message de félicitations -->
     <div class="congrats" :class="{ offset: store.isShopOpened, show: store.upgrades[UPGRADES.length - 1] === 1 }">
       Happy Halloween
     </div>
+    
+    <!-- Halloween verification message -->
+    <div v-if="!store.isVerified" class="halloween-message">
+      <h2>🎃 Halloween</h2>
+      <p>Verify that u are ready to fight pumpkin demon by verifying ur Solana address</p>
+    </div>
+    
     <Pumpkin />
   </div>
 </template>
@@ -74,4 +87,31 @@ body {
     opacity: 1;
   }
 }
+
+.halloween-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  text-align: center;
+  pointer-events: none;
+  
+  h2 {
+    font-size: 64px;
+    font-family: 'Londrina Sketch', sans-serif;
+    color: #fda619;
+    margin-bottom: 20px;
+    animation: flickering 2s infinite linear;
+    text-shadow: 0 0 20px rgba(253, 166, 25, 0.5);
+  }
+  
+  p {
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  }
+}
+
 </style>

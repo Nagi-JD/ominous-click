@@ -2,6 +2,11 @@
 import { store } from '../store'
 
 function handleHit(e: Event) {
+  // Block if not verified
+  if (!store.isVerified) {
+    return
+  }
+  
   store.hit()
   const el = e.currentTarget as HTMLElement
   el.classList.remove('hit')
@@ -12,7 +17,9 @@ function handleHit(e: Event) {
 
 <template>
   <div class="container" :class="{ offset: store.isShopOpened }">
-    <div class="pumpkin" @click="handleHit"><span></span></div>
+    <div class="pumpkin" @click="handleHit" :class="{ blocked: !store.isVerified }">
+      <span></span>
+    </div>
   </div>
 </template>
 
@@ -51,6 +58,15 @@ function handleHit(e: Event) {
     height: 100%;
     animation: smallRotate 2s infinite ease-in-out;
     background: url(../assets/img/pumpkin.svg) center center / cover;
+  }
+
+  &.blocked {
+    cursor: not-allowed;
+    opacity: 0.5;
+    
+    span {
+      animation: none;
+    }
   }
 }
 

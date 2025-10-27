@@ -5,11 +5,17 @@ import { store, Upgrade, UPGRADES, UpgradeType } from '../store'
 let hasOpenedShop = false
 
 function handleBuy(upgrade: Upgrade, num = 1) {
+  // Block if not verified
+  if (!store.isVerified) return
+  
   if (upgrade.price * num > store.count) return
   store.buy(upgrade, num)
 }
 
 function handleToggle() {
+  // Block if not verified
+  if (!store.isVerified) return
+  
   hasOpenedShop = true
   store.toggleShop()
 }
@@ -20,11 +26,11 @@ function handleToggle() {
     <button class="toggle" @click="handleToggle">
       <img src="../assets/img/upgrade.svg" alt="" /><span
         :class="{ show: !hasOpenedShop && store.count >= UPGRADES[0].price }"
-        >Améliorations disponibles</span
+        >Upgrades available</span
       >
     </button>
     <div class="panel">
-      <div class="title">Boutique</div>
+      <div class="title">Shop</div>
       <ul class="items">
         <li v-for="(upgrade, i) in UPGRADES" class="item" :key="i">
           <button
@@ -38,11 +44,11 @@ function handleToggle() {
               <span class="total">{{ store.upgrades[i] }}</span>
               <span class="name">{{ upgrade.name }}</span
               ><br />
-              Prix : <span class="price">{{ formatNumber(upgrade.price, 1000000) }}</span
+              Price: <span class="price">{{ formatNumber(upgrade.price, 1000000) }}</span
               ><br />
               <em
-                >+{{ formatNumber(upgrade.value, 1000000) }} dégâts /
-                {{ upgrade.type === UpgradeType.DamagePerClick ? 'clic' : 'sec' }}</em
+                >+{{ formatNumber(upgrade.value, 1000000) }} damage /
+                {{ upgrade.type === UpgradeType.DamagePerClick ? 'click' : 'sec' }}</em
               >
             </span>
           </button>

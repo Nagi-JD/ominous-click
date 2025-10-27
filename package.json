@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@solana/web3.js": "^1.95.8",
+    "@supabase/supabase-js": "^2.76.1",
     "add": "^2.0.6",
     "howler": "^2.2.4",
     "sanitize.css": "^13.0.0",
