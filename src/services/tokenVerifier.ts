@@ -55,23 +55,38 @@ export async function submitScore(
   stats: { damagePerClick: number; damagePerSecond: number; totalClicks?: number }
 ): Promise<boolean> {
   try {
+    const payload = {
+      address, 
+      score, 
+      stats,
+      totalClicks: stats.totalClicks || 0,
+      timestamp: Date.now()
+    }
+    
+    console.log('📤 Submitting to:', CONFIG.API_URL)
+    console.log('📦 Payload:', payload)
+    
     const response = await fetch(`${CONFIG.API_URL}/api/submit-score`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
-        address, 
-        score, 
-        stats,
-        totalClicks: stats.totalClicks || 0,
-        timestamp: Date.now() 
-      }),
+      body: JSON.stringify(payload),
     })
     
-    return response.ok
+    console.log('📥 Response status:', response.status)
+    
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('❌ API error:', errorText)
+      return false
+    }
+    
+    const result = await response.json()
+    console.log('✅ API success:', result)
+    return true
   } catch (error) {
-    console.error('Error submitting score:', error)
+    console.error('❌ Error submitting score:', error)
     return false
   }
 }
