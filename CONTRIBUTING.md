@@ -28,7 +28,5 @@ npm run dev
 - Follow Vue 3 Composition API
 - Add comments for complex logic
 
----
-
-Thank you for helping make PumpKing better! 👑
+Thank you for helping make PumpKing better.
 
