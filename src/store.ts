@@ -179,6 +179,7 @@ export const store = reactive({
   damagePerClick: 1,
   damagePerSecond: 0,
   totalClicks: 0, // Track total number of clicks
+  lastClickTime: 0, // Anti-bot: rate limiting
   isShopOpened: false,
   mute: false,
   upgrades: Array(UPGRADES.length).fill(0),
@@ -201,6 +202,17 @@ export const store = reactive({
     this.isShopOpened = !this.isShopOpened
   },
   hit() {
+    // Anti-bot: Rate limiting - max 5 clicks per second
+    const now = Date.now()
+    const timeSinceLastClick = now - this.lastClickTime
+    const MIN_CLICK_INTERVAL = 200 // 200ms = 5 clicks/sec max
+    
+    if (timeSinceLastClick < MIN_CLICK_INTERVAL) {
+      // Block clicks too fast (bot protection)
+      return
+    }
+    
+    this.lastClickTime = now
     this.count += this.damagePerClick
     this.totalClicks += 1 // Count clicks for leaderboard
     this.slash()
