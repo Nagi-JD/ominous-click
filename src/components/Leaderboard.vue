@@ -9,7 +9,7 @@
       <div class="title">🏆 Leaderboard</div>
       <div class="rewards-banner">
         <span class="trophy">🏆</span>
-        Winner takes 1 SOL every 5 minutes!
+        Winner takes 20% of the dev fees!
       </div>
       <div class="live-indicator">
         🔴 LIVE - Round ends in {{ timeRemaining }}
