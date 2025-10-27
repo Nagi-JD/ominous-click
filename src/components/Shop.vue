@@ -113,6 +113,7 @@ function handleToggle() {
   height: 48px;
   cursor: pointer;
   position: absolute;
+  z-index: 300;
 
   @media (min-width: 768px) {
     top: 16px;
