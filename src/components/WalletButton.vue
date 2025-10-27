@@ -189,19 +189,11 @@ const changeAddress = () => {
   display: flex;
   align-items: center;
   gap: 16px;
-  position: absolute;
-  top: 16px;
+  position: fixed;
+  bottom: 16px;
   right: 16px;
-  left: 16px;
   font-size: 16px;
-  flex-wrap: wrap;
   z-index: 200;
-  
-  @media (min-width: 768px) {
-    left: auto;
-    width: auto;
-    flex-wrap: nowrap;
-  }
   
   .address-display {
     font-family: monospace;
