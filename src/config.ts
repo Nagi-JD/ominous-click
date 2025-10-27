@@ -8,7 +8,7 @@ export const CONFIG = {
   RPC_ENDPOINT: import.meta.env.VITE_RPC_ENDPOINT || 'https://mainnet.helius-rpc.com/?api-key=917e1df6-fac1-44e1-8338-f21346903851',
   
   // API Backend
-  API_URL: import.meta.env.VITE_API_URL || 'https://halloweenproject-quqc.vercel.app',
+  API_URL: import.meta.env.VITE_API_URL || 'https://www.ominousclick.xyz',
   
   // Leaderboard config
   LEADERBOARD_LIMIT: 100,
