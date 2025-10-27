@@ -47,8 +47,8 @@ const myScore = ref(0)
 const myRank = ref(0)
 const myClicks = ref(0)
 
-// Tournament system - 30 minute rounds
-const ROUND_DURATION = 30 * 60 * 1000 // 30 minutes in ms
+// Tournament system - 5 minute rounds
+const ROUND_DURATION = 5 * 60 * 1000 // 5 minutes in ms
 const roundStartTime = ref(Date.now())
 
 const timeRemaining = computed(() => {
