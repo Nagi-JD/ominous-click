@@ -12,7 +12,7 @@
         Rewards for Top 10
       </div>
       <div class="live-indicator">
-        🔴 LIVE - Updates every 30 minutes
+        🔴 LIVE - Round ends in {{ timeRemaining }}
       </div>
       
       <div class="my-rank" v-if="myRank && myRank > 0">
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { formatNumber } from '../utils'
 import { store } from '../store'
 import { getLeaderboard } from '../services/tokenVerifier'
@@ -46,6 +46,23 @@ const players = ref<any[]>([])
 const myScore = ref(0)
 const myRank = ref(0)
 const myClicks = ref(0)
+
+// Tournament system - 30 minute rounds
+const ROUND_DURATION = 30 * 60 * 1000 // 30 minutes in ms
+const roundStartTime = ref(Date.now())
+
+const timeRemaining = computed(() => {
+  const elapsed = Date.now() - roundStartTime.value
+  const remaining = ROUND_DURATION - elapsed
+  
+  if (remaining <= 0) {
+    return 'Round ended!'
+  }
+  
+  const minutes = Math.floor(remaining / (60 * 1000))
+  const seconds = Math.floor((remaining % (60 * 1000)) / 1000)
+  return `${minutes}m ${seconds}s`
+})
 
 // Fetch from API
 
@@ -74,23 +91,37 @@ const formatAddress = (address: string) => {
 }
 
 let refreshInterval: NodeJS.Timeout | null = null
+let timerInterval: NodeJS.Timeout | null = null
 
 const toggle = () => {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
     loadLeaderboard()
-    // Auto-refresh le leaderboard toutes les 30 minutes
+    // Refresh leaderboard every 10 seconds
     refreshInterval = setInterval(() => {
       loadLeaderboard()
-    }, 30 * 60 * 1000) // 30 minutes = 1,800,000 ms
+    }, 10000)
   } else {
-    // Arrêter le refresh quand le leaderboard se ferme
+    // Stop refresh when leaderboard closes
     if (refreshInterval) {
       clearInterval(refreshInterval)
       refreshInterval = null
     }
   }
 }
+
+// Update timer every second
+onMounted(() => {
+  timerInterval = setInterval(() => {
+    // Force reactivity update
+    const _ = timeRemaining.value
+  }, 1000)
+})
+
+onBeforeUnmount(() => {
+  if (timerInterval) clearInterval(timerInterval)
+  if (refreshInterval) clearInterval(refreshInterval)
+})
 </script>
 
 <style scoped>
