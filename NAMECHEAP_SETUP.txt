@@ -1,0 +1,14 @@
+Configuration Namecheap pour Vercel
+
+Option 1: Using Vercel's Nameservers (RECOMMANDÉ)
+- Namecheap → Domain → Manage → Nameservers
+- Change to: Custom DNS
+- Enter: ns1.vercel-dns.com et ns2.vercel-dns.com
+- Save
+
+Option 2: Keep Namecheap Nameservers
+- Keep current nameservers
+- Go to "Advanced DNS"
+- Add: A Record @ → 76.76.21.21
+- Add: CNAME www → cname.vercel-dns.com
+
