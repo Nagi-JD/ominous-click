@@ -1,3 +1,7 @@
+Contract adress of the MEMECOIN : 
+
+
+
 # PumpKing - Tournament-Based Clicker
 
 A competitive blockchain-based clicker game where the fastest clicker wins 20% of accumulated dev fees every 5 minutes. Built with Vue 3, TypeScript, and Solana integration.
